@@ -1,21 +1,26 @@
-const Flight = require("../models/flight");
+const Flight = require('../models/flight');
 
 function newFlight(req, res) {
-  res.render("flights/new", { error: "" });
+  res.render('flights/new', { error: '' });
 }
 
 async function create(req, res) {
   try {
     await Flight.create(req.body);
-    res.redirect("/flights");
+    res.redirect('/flights');
   } catch (err) {
     console.log(err);
-    res.render("flights/new", { errorMsg: err.message });
+    res.render('flights/new', { errorMsg: err.message });
   }
 }
 
+async function show(req, res) {
+  const flight = await Flight.findById(req.params.id);
+  res.render('flights/show', { title: 'Flight Detail', flight });
+}
+
 async function index(req, res) {
-  res.render("flights/index", {
+  res.render('flights/index', {
     flights: await Flight.find(),
   });
 }
@@ -24,4 +29,5 @@ module.exports = {
   new: newFlight,
   create,
   index,
+  show,
 };
