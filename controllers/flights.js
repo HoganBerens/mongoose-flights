@@ -1,4 +1,5 @@
 const Flight = require('../models/flight');
+const Ticket = require('../models/ticket');
 
 function newFlight(req, res) {
   res.render('flights/new', { error: '' });
@@ -15,8 +16,19 @@ async function create(req, res) {
 }
 
 async function show(req, res) {
-  const flight = await Flight.findById(req.params.id);
-  res.render('flights/show', { title: 'Flight Detail', flight });
+  try {
+    const flight = await Flight.findById(req.params.id).populate('tickets');
+
+    if (flight) {
+      const tickets = await Ticket.find({ _id: { $nin: flight.ticket } }).sort(
+        'name'
+      );
+      flight.tickets.push(tickets);
+      res.render('flights/show', { title: 'Flight Detail', flight, tickets });
+    }
+  } catch (err) {
+    console.log('Error in flightsShowFunction', err);
+  }
 }
 
 async function index(req, res) {

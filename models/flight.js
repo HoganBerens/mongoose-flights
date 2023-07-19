@@ -21,6 +21,7 @@ const flightSchema = new Schema({
   flightNo: { type: Number, require: true, min: 10, max: 9999 },
   depart: { type: Date },
   destinations: [destinationSchema],
+  tickets: { type: Array },
 });
 
 module.exports = mongoose.model('Flight', flightSchema);

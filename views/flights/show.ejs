@@ -52,4 +52,27 @@
 </table>
 <% } else { %>
 <h5>No destinations Yet</h5>
-<% } %> <%- include('../partials/footer') %>
+<% } %> <% if (flight.tickets.length) { %>
+<table>
+  <thead>
+    <h3>Tickets:</h3>
+    <tr>
+      <th>Seat:</th>
+      <th>Price:</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% flight.tickets.forEach(function(t) { %>
+    <tr>
+      <td><%= t.seat %></td>
+      <td><%= t.price %></td>
+    </tr>
+    <% }); %>
+  </tbody>
+</table>
+<% } else { %>
+<h5>No Tickets Yet</h5>
+<% } %>
+
+<td><a href="/flights/<%= flight._id %>/tickets/new">Add Ticket</a></td>
+<%- include('../partials/footer') %>
